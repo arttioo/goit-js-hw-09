@@ -15,12 +15,15 @@ function onFormSubmit(evt) {
 
   for (let i = 0; i <= c; i += 1) {
     const delayResult = a + b * (i - 1);
-    createPromise({ position: i, delay: delayResult })
+    console.log(delayResult);
+    createPromise(i, delayResult)
       .then(({ position, delay }) => {
-        Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        console.log({ position, delay });
+        Notiflix.Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
+        console.log({ position, delay });
       })
       .catch(({ position, delay }) => {
-        Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
       });
   }
 }
@@ -29,9 +32,10 @@ function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
-        resolve(position, delay);
+        resolve({ position, delay });
+        console.log({ position, delay });
       } else {
-        reject(position, delay);
+        reject({ position, delay });
       }
     }, delay);
   });
